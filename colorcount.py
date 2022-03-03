@@ -40,7 +40,7 @@ def get_response(path_arg: str, plot: bool = False):
 
         response.append(generate(image_path, color))
 
-    return response
+    return response[0] if len(response) == 1 else response
 
 def main():
     parser = argparse.ArgumentParser()
