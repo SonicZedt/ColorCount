@@ -99,7 +99,10 @@ def main():
 
     image = Image_Data(image_path)
     color = Color(image.Color_Hex)
-    generate_response(color, response_status)
+
+    response = generate_response(color, response_status)
+    print(response)
+    return response
 
 if __name__ == "__main__":
     main()
