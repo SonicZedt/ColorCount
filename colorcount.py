@@ -1,8 +1,9 @@
-import sys
+import argparse
 import json
 import requests
 import collections
 import numpy as np
+import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
 
@@ -57,7 +58,14 @@ class Color:
         """
         Return total unique color
         """
-        return dict(collections.Counter(self.color))
+        color_count = dict(collections.Counter(self.color))
+        
+        # Sort dict by highest value
+        color_count = {
+            key: value for key, value in sorted(color_count.items(), key=lambda x: x[1], reverse=True)
+        }
+
+        return color_count
 
     @property
     def Listed_Count(self) -> list[dict]:
@@ -65,7 +73,7 @@ class Color:
         Return total unique color in list of dictionary
         """
         list_colors = []
-        colors = dict(collections.Counter(self.color)).items()
+        colors = self.Count.items()
         
         # List each dict item
         for key, val in colors:
@@ -76,6 +84,26 @@ class Color:
 
     def __init__(self, color: list):
         self.color = color
+
+    def plot(self, min_value = 1):
+        """
+        Plot color data with value more than min_value
+        """
+        color_count = self.Count
+        color_count = {key : value for key, value in color_count.items() if value >= min_value}
+    
+        color = list(color_count.keys())
+        count = list(color_count.values())
+        bar_colors = color
+
+        figure = plt.figure('Color Distribution')
+        plt.barh(color, count, color=bar_colors, edgecolor='#aaaaaa')
+        plt.title('Color Distribution')
+        plt.ylabel('Color')
+        plt.xlabel('Count')
+        plt.show()
+
+        return figure
 
 def generate_response(color_data: Color, response_status: bool):
     response = {
@@ -91,14 +119,23 @@ def generate_response(color_data: Color, response_status: bool):
     return json.dumps(response) 
 
 def main():
-    image_path = sys.argv[1]
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--path', type=str, required=True, help="path to image")
+    parser.add_argument('--plot', type=int, default=0, help="plot color data")
+    args = parser.parse_args()
 
+    image_path = args.path
+    plot_data = args.plot
     response_status = False
+
     if 'http' in image_path:
         response_status = requests.get(image_path, stream=True).status_code == 200
 
     image = Image_Data(image_path)
     color = Color(image.Color_Hex)
+
+    if plot_data:
+        color.plot(plot_data)
 
     response = generate_response(color, response_status)
     print(response)
