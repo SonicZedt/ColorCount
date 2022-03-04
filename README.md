@@ -4,7 +4,7 @@ Count color on a image
 ## Usage
 Execute from terminal:
 ```
-python colorcount.py --path <str> --plot <int>
+python colorcount.py --path <str> --plot <int> --save <str>
 ```
 ### Arguments:
 | Argument | Type | Description |
