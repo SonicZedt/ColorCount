@@ -23,7 +23,7 @@ def get_response(path_arg: str, plot: bool = False):
         response["total_scanned_color"] = color_data.Total
         response["unique_color_count"] = color_data.Listed_Count
 
-        return json.dumps(response, indent=4)
+        return response
 
     def get_images_path():
         with open(path_arg, 'r') as j:
@@ -40,7 +40,10 @@ def get_response(path_arg: str, plot: bool = False):
 
         response.append(generate(image_path, color))
 
-    return response[0] if len(response) == 1 else response
+    response = response[0] if len(response) == 1 else response
+    response = json.dumps(response, indent=4)
+
+    return response
 
 def save(output, path):
     with open(path, 'w') as file:
