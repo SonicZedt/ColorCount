@@ -4,20 +4,31 @@ Count color on a image
 ## Usage
 Execute from terminal:
 ```
-python colorcount.py --path <str> --plot <int> --save <str>
+python colorcount.py --path <str> --plot <int> --save <str> --post <str>
 ```
 ### Arguments:
-| Argument | Type | Description |
-| :--      | :--  | :--         |
-| --path   | str  | path or url to image or to json request file (required) |
-| --plot   | int  | plot color data with count equal or more than defined argument. _default: 0_ (opt) |
-| --save   | str  | save output to path (opt) |
+| Argument | Type | Required | Description |
+| :--      | :--  | :--      |:--          |
+| --path   | str  | yes |path or url to image or to json request |
+| --plot   | int  | opt |plot color data with count equal or more than defined argument. _default: 0_ |
+| --save   | str  | opt |save output to path |
+| --post   | str  | opt |send post request contain json output to url |
 
-#### 1st Example:
-Count color on local image without plot the data and save output:</br>
-this will count color on `image.jpg` and save the output to `image_color_count,json`
+### Output:
+Output is a json.
+| Key                 | Type | Description |
+| :--                 | :--  | :--         |
+| ok                  | bool | response 200 of given path or url to image, produce false if local path |
+| image_path          | str  | path or url to image |
+| total_scanned_color | int  | total scanned color, sum of image resolution, or how many pixel the image has |
+| unique_color_count  | dict | total unique color. Key is color in hex, value is number of occurrences of color in image . `{"#ffffff": 3}` means there are 3 occurrences of exact white in an image|
+
+### Example:
+#### Count color on local image:
+This will count color on `image.jpg` which is stored in D: drive
+Command:
 ```
-python colorcount.py --path D:\image.jpg --save D:\image_color_count.json
+python colorcount.py --path D:\image.jpg
 ```
 Output:
 ```
@@ -33,16 +44,13 @@ Output:
 }
 ```
 
-#### 2nd Example:
-Count color on online accessible image and plot the data with count equal or more than 1000: </br>
-Image source (https://avatars.githubusercontent.com/u/83224221?v=4):</br>
-![Image_Source](https://avatars.githubusercontent.com/u/83224221?v=4)
+#### Count color on online accessible image:
+This will count color on online accessible image where url is contains `http`
+Command:
 ```
-python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4 --plot 1000
+python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4
 ```
 Output:
-![Color_Distribution_Plot](https://user-images.githubusercontent.com/83224221/156562301-639a35ef-e7c9-444e-bea1-9453ab0feee5.png)
-
 ```
 {
     "ok": true,
@@ -58,9 +66,9 @@ Output:
     ]
 }
 ```
-#### 3rd Example:
-Count color on multiple local image without plot the data: </br>
-to count color on multiple local and/or online accessible image, a json is needed</br>
+
+#### Count color on multiple images
+To count color on multiple local and/or online accessible images, a json as a request is needed
 request.json:
 ```
 {
@@ -70,6 +78,7 @@ request.json:
     ]
 }
 ```
+Command:
 ```
 python colorscan.py --path request.json
 ```
@@ -98,11 +107,20 @@ Output:
 ]
 ```
 
-### Output:
-Output is a json.
-| Key                 | Type | Description |
-| :--                 | :--  | :--         |
-| ok                  | bool | Response 200 of given path or url to image, produce false if local path |
-| image_path          | str  | Path or url to image |
-| total_scanned_color | int  | Total scanned color, sum of image resolution, or how many pixel the image has |
-| unique_color_count  | dict | Total unique color. Key is color in hex, value is count how many time that color appear in image. `{"#ffffff": 3}` |
+#### Plot data:
+This will plot color data of github avatar that has number of occurrences equal or more than 1000
+Image source (https://avatars.githubusercontent.com/u/83224221?v=4):</br>
+![Image_Source](https://avatars.githubusercontent.com/u/83224221?v=4)</br>
+Command:
+```
+python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4 --plot 1000
+```
+Output:</br>
+![Color_Distribution_Plot](https://user-images.githubusercontent.com/83224221/156562301-639a35ef-e7c9-444e-bea1-9453ab0feee5.png)
+
+#### Post request:
+This will send post request contains json to https://httpbin.org/post
+Command:
+```
+python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4 --post https://httpbin.org/post
+```
