@@ -23,7 +23,7 @@ def get_response(path_arg: str, plot: bool = False):
         response["total_scanned_color"] = color_data.Total
         response["unique_color_count"] = color_data.Listed_Count
 
-        return response
+        return json.dumps(response, indent=4)
 
     def get_images_path():
         with open(path_arg, 'r') as j:
@@ -42,10 +42,15 @@ def get_response(path_arg: str, plot: bool = False):
 
     return response[0] if len(response) == 1 else response
 
+def save(output, path):
+    with open(path, 'w') as file:
+        file.write(output)
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--path', required=True, help="path to image")
-    parser.add_argument('--plot', type=int, default=0, help="plot color data")
+    parser.add_argument('--plot', type=int, default=0, help="int, plot color data")
+    parser.add_argument('--save', type=str, help="path, save output to path")
     args = parser.parse_args()
 
     image_path = args.path
@@ -53,6 +58,9 @@ def main():
 
     response = get_response(image_path, plot_data)
     print(response)
+
+    if args.save:
+        save(response, args.save)
 
 if __name__ == "__main__":
     main()
