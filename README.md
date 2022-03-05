@@ -6,14 +6,19 @@ Execute from terminal:
 ```
 python colorcount.py --path <str> --plot <int> --save <str> --post <str>
 ```
+
+<br />
 ### Arguments:
 | Argument | Type | Required | Description |
 | :--      | :--  | :--      |:--          |
-| --path   | str  | yes |path or url to image or to json request |
-| --plot   | int  | opt |plot color data with count equal or more than defined argument. _default: 0_ |
-| --save   | str  | opt |save output to path |
-| --post   | str  | opt |send post request contain json output to url |
+| --path   | str  | yes | path or url to image or to json request |
+| -HG, --hget |str| opt | headers for GET request if require to access given path/url |
+| -HP, --hpost|str| opt | headers for POST request if require to access url |
+| --plot   | int  | opt | plot color data with count equal or more than defined argument. _default: 0_ |
+| --save   | str  | opt | save output to path |
+| --post   | str  | opt | send POST request contain json output to url |
 
+<br />
 ### Output:
 Output is a json.
 | Key                 | Type | Description |
@@ -23,6 +28,7 @@ Output is a json.
 | total_scanned_color | int  | total scanned color, sum of image resolution, or how many pixel the image has |
 | unique_color_count  | dict | total unique color. Key is color in hex, value is number of occurrences of color in image . `{"#ffffff": 3}` means there are 3 occurrences of exact white in an image|
 
+<br />
 ### Example:
 #### Count color on local image:
 This will count color on `image.jpg` which is stored in D: drive
@@ -44,6 +50,7 @@ Output:
 }
 ```
 
+<br/>
 #### Count color on online accessible image:
 This will count color on online accessible image where url is contains `http`
 Command:
@@ -67,6 +74,7 @@ Output:
 }
 ```
 
+<br />
 #### Count color on multiple images
 To count color on multiple local and/or online accessible images, a json as a request is needed
 request.json:
@@ -107,20 +115,33 @@ Output:
 ]
 ```
 
+<br />This will get path of images from online private json, to read it require a secret key and it's can be passed in header called `X-Master-Key` as well as other extra information such as `X-Bin-Meta`
+Command:
+```
+python colorcount.py --path https://api.jsonbin.io/b/62235e8d06182767436dca2a --hget 'X-Master-Key: <key>' 'X-Bin-Meta: true'
+```
+
+<br />
 #### Plot data:
 This will plot color data of github avatar that has number of occurrences equal or more than 1000
-Image source (https://avatars.githubusercontent.com/u/83224221?v=4):</br>
-![Image_Source](https://avatars.githubusercontent.com/u/83224221?v=4)</br>
+Image source (https://avatars.githubusercontent.com/u/83224221?v=4):<br />
+![Image_Source](https://avatars.githubusercontent.com/u/83224221?v=4)<br />
 Command:
 ```
 python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4 --plot 1000
 ```
-Output:</br>
+Output:<br />
 ![Color_Distribution_Plot](https://user-images.githubusercontent.com/83224221/156562301-639a35ef-e7c9-444e-bea1-9453ab0feee5.png)
 
+<br />
 #### Post request:
-This will send post request contains json to https://httpbin.org/post
+This will send post request contains json output to https://httpbin.org/post
 Command:
 ```
 python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4 --post https://httpbin.org/post
+```
+<br />
+This do the same but with POST headers contains `id` and `key`:
+```
+python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4 --post https://httpbin.org/post --hpost 'id: 00' 'key: rndmky'
 ```
