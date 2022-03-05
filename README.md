@@ -1,13 +1,22 @@
 # ColorCount
 Count color on a image
 
+## Table of Content
+1. [Usage](#Usage)
+2. [Arguments](#Arguments)
+3. [Output](#Output)
+4. [Example](#Example)
+    - [Count color on local image](#Count-color-on-local-image)
+    - [Count color on online accessible image](#Count-color-on-online-accessible-image)
+    - [Count color on multiple images](#Count-color-on-multiple-images)
+    - [Plot data](#Plot-data)
+    - [Post request](#Post-request)
+
 ## Usage
 Execute from terminal:
 ```
-python colorcount.py --path <str> --plot <int> --save <str> --post <str>
+python colorcount.py --path <str> --hget <str> --plot <int> --save <str> --post <str> --hpost <str>
 ```
-
-<br />
 ### Arguments:
 | Argument | Type | Required | Description |
 | :--      | :--  | :--      |:--          |
@@ -18,7 +27,6 @@ python colorcount.py --path <str> --plot <int> --save <str> --post <str>
 | --save   | str  | opt | save output to path |
 | --post   | str  | opt | send POST request contain json output to url |
 
-<br />
 ### Output:
 Output is a json.
 | Key                 | Type | Description |
@@ -28,7 +36,6 @@ Output is a json.
 | total_scanned_color | int  | total scanned color, sum of image resolution, or how many pixel the image has |
 | unique_color_count  | dict | total unique color. Key is color in hex, value is number of occurrences of color in image . `{"#ffffff": 3}` means there are 3 occurrences of exact white in an image|
 
-<br />
 ### Example:
 #### Count color on local image:
 This will count color on `image.jpg` which is stored in D: drive
@@ -50,7 +57,6 @@ Output:
 }
 ```
 
-<br/>
 #### Count color on online accessible image:
 This will count color on online accessible image where url is contains `http`
 Command:
@@ -74,7 +80,6 @@ Output:
 }
 ```
 
-<br />
 #### Count color on multiple images
 To count color on multiple local and/or online accessible images, a json as a request is needed
 request.json:
@@ -121,7 +126,6 @@ Command:
 python colorcount.py --path https://api.jsonbin.io/b/62235e8d06182767436dca2a --hget 'X-Master-Key: <key>' 'X-Bin-Meta: true'
 ```
 
-<br />
 #### Plot data:
 This will plot color data of github avatar that has number of occurrences equal or more than 1000
 Image source (https://avatars.githubusercontent.com/u/83224221?v=4):<br />
@@ -133,7 +137,6 @@ python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4
 Output:<br />
 ![Color_Distribution_Plot](https://user-images.githubusercontent.com/83224221/156562301-639a35ef-e7c9-444e-bea1-9453ab0feee5.png)
 
-<br />
 #### Post request:
 This will send post request contains json output to https://httpbin.org/post
 Command:
