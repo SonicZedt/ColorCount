@@ -120,7 +120,7 @@ Output:
 ]
 ```
 
-<br />This will get path of images from online private json, to read it require a secret key and it's can be passed in header called `X-Master-Key` as well as other extra information such as `X-Bin-Meta`
+This will get path of images from online private json, to read it require a secret key and it's can be passed in header called `X-Master-Key` as well as other extra information such as `X-Bin-Meta`
 Command:
 ```
 python colorcount.py --path https://api.jsonbin.io/b/62235e8d06182767436dca2a --hget 'X-Master-Key: <key>' 'X-Bin-Meta: true'
@@ -128,13 +128,14 @@ python colorcount.py --path https://api.jsonbin.io/b/62235e8d06182767436dca2a --
 
 #### Plot data:
 This will plot color data of github avatar that has number of occurrences equal or more than 1000
-Image source (https://avatars.githubusercontent.com/u/83224221?v=4):<br />
-![Image_Source](https://avatars.githubusercontent.com/u/83224221?v=4)<br />
+<br/>
+Image source (https://avatars.githubusercontent.com/u/83224221?v=4):<br/>
+![Image_Source](https://avatars.githubusercontent.com/u/83224221?v=4)<br/>
 Command:
 ```
 python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4 --plot 1000
 ```
-Output:<br />
+Output:
 ![Color_Distribution_Plot](https://user-images.githubusercontent.com/83224221/156562301-639a35ef-e7c9-444e-bea1-9453ab0feee5.png)
 
 #### Post request:
@@ -143,8 +144,8 @@ Command:
 ```
 python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4 --post https://httpbin.org/post
 ```
-<br />
-This do the same but with POST headers contains `id` and `key`:
+
+Suppose if POST request require headers contains `id` and `key`:
 ```
 python colorcount.py --path https://avatars.githubusercontent.com/u/83224221?v=4 --post https://httpbin.org/post --hpost 'id: 00' 'key: rndmky'
 ```
