@@ -104,6 +104,7 @@ class Color:
         plt.title('Color Distribution')
         plt.ylabel('Color')
         plt.xlabel('Count')
+        plt.show()
 
         # Render figure
         canvas = FigureCanvas(figure)

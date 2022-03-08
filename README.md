@@ -127,7 +127,6 @@ python colorcount.py --path https://api.jsonbin.io/b/62235e8d06182767436dca2a --
 ```
 
 #### Plot data:
-**UNDER RECONSTRUCTION**. Currently `color.plot()` returning image in 3D numpy array of plot figure<br/>
 This will plot color data of github avatar that has number of occurrences equal or more than 1000
 <br/>
 Image source (https://avatars.githubusercontent.com/u/83224221?v=4):<br/>
