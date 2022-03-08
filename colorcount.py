@@ -41,7 +41,10 @@ def get_request(path, headers):
     else:
         return path
 
-def get_response(path_arg, plot: bool = False):
+def get_response(path_arg, plot: int = 1) -> tuple:
+    """
+    Return response (json) and color_plot (numpy array)
+    """
     def check_status_code(url: str, status_code = 200) -> bool:
         if 'http' in url:
             return requests.get(url, stream=True).status_code == status_code
@@ -75,6 +78,7 @@ def get_response(path_arg, plot: bool = False):
             return path_arg["image_path"]
 
     response = []
+    color_plot = []
     try:
         images_path = get_images_path()
     except:
@@ -85,14 +89,14 @@ def get_response(path_arg, plot: bool = False):
         color = Color(image.Color_Hex)
         
         if plot:
-            color.plot()
+            color_plot = color.plot(plot)
 
         response.append(generate(image_path, color))
 
     response = response[0] if len(response) == 1 else response
     response = json.dumps(response, indent=4)
 
-    return response
+    return (response, color_plot)
 
 def send_output(output, args):
     if args.save:
@@ -102,7 +106,10 @@ def send_output(output, args):
     
     elif args.post:
         # Send request post to args.post (url)
-        response = requests.post(args.post, headers=parse_headers(args.hpost), json=output)
+        color_data = output[0]
+        color_plot = output[1]
+
+        response = requests.post(args.post, headers=parse_headers(args.hpost), json=color_data)
         print(args.post, response)
 
         return response
@@ -112,7 +119,7 @@ def main():
     parser.add_argument('--path', required=True, help="path to image")
     parser.add_argument('-HG', '--hget', nargs='*', help="extra source of information for GET request")
     parser.add_argument('-HP', '--hpost', nargs='*', help="extra source of information for POST request")
-    parser.add_argument('--plot', type=int, default=0, help="plot color data with value equal or than int")
+    parser.add_argument('--plot', type=int, nargs='?', const=1, help="plot color data with value equal or than int")
     parser.add_argument('--save', type=str, help="save output to path")
     parser.add_argument('--post', type=str, help="send post request to url")
     args = parser.parse_args()

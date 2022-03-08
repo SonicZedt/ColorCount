@@ -2,6 +2,7 @@ import requests
 import numpy as np
 import collections
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from PIL import Image
 from io import BytesIO
 
@@ -94,11 +95,21 @@ class Color:
         count = list(color_count.values())
         bar_colors = color
 
-        figure = plt.figure('Color Distribution')
+        # Draw plot
+        #fig_width = len(color)
+        #fig_height
+        figure = plt.figure('Color Distribution', tight_layout=True)
+
         plt.barh(color, count, color=bar_colors, edgecolor='#aaaaaa')
         plt.title('Color Distribution')
         plt.ylabel('Color')
         plt.xlabel('Count')
-        plt.show()
 
-        return figure
+        # Render figure
+        canvas = FigureCanvas(figure)
+        canvas.draw()
+
+        width, height = figure.get_size_inches() * figure.get_dpi()
+        image = np.frombuffer(canvas.tostring_rgb(), dtype='uint8').reshape(int(height), int(width), 3)
+
+        return image
