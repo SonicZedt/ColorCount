@@ -109,7 +109,12 @@ def send_output(output, args):
         color_data = output[0]
         color_plot = output[1]
 
-        response = requests.post(args.post, headers=parse_headers(args.hpost), json=color_data)
+        response = requests.post(
+            url=args.post,
+            headers=parse_headers(args.hpost),
+            data=color_plot,
+            json=color_data
+            )
         print(args.post, response)
 
         return response
@@ -125,7 +130,7 @@ def main():
     args = parser.parse_args()
 
     response = get_response(get_request(args.path, args.hget), args.plot)
-    print(response)
+    print(response[0])
 
     send_output(response, args)
 
